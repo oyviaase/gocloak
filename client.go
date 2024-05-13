@@ -548,6 +548,16 @@ func (g *GoCloak) LoginAdmin(ctx context.Context, username, password, realm stri
 	})
 }
 
+func (g *GoCloak) LoginAdminOtp(ctx context.Context, username, password, totp, realm string) (*JWT, error) {
+	return g.GetToken(ctx, realm, TokenOptions{
+		ClientID:  StringP(adminClientID),
+		GrantType: StringP("password"),
+		Username:  &username,
+		Password:  &password,
+		Totp:	   &totp,
+	})
+}
+
 // LoginClient performs a login with client credentials
 func (g *GoCloak) LoginClient(ctx context.Context, clientID, clientSecret, realm string, scopes ...string) (*JWT, error) {
 	opts := TokenOptions{
